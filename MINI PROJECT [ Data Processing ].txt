@@ -1,0 +1,48 @@
+import csv
+
+students = [
+    {"Name": "Joshitha", "Tamil": 80, "English": 70, "Maths": 90, "Physics": 85, "Chemistry": 88, "Hindi": 75, "Computer": 92, "Biology": 81},
+    {"Name": "Ramya", "Tamil": 75, "English": 65, "Maths": 70, "Physics": 72, "Chemistry": 68, "Hindi": 60, "Computer": 78, "Biology": 69},
+    {"Name": "Janu", "Tamil": 40, "English": 50, "Maths": 30, "Physics": 35, "Chemistry": 25, "Hindi": 45, "Computer": 50, "Biology": 38},
+    {"Name": "Hashini", "Tamil": 59, "English": 89, "Maths": 97, "Physics": 79, "Chemistry": 67, "Hindi": 85, "Computer": 90, "Biology": 88},
+    {"Name": "Moni", "Tamil": 65, "English": 75, "Maths": 85, "Physics": 80, "Chemistry": 70, "Hindi": 78, "Computer": 88, "Biology": 82},
+]
+
+subjects = ["Tamil", "English", "Maths", "Physics", "Chemistry", "Hindi", "Computer", "Biology"]
+
+for stu in students:
+    total = sum(stu[sub] for sub in subjects)
+    stu["Average"] = total / len(subjects)
+
+    if all(stu[sub] >= 35 for sub in subjects):
+        stu["Result"] = "Pass"
+    else:
+        stu["Result"] = "Fail"
+
+    avg = stu["Average"]
+
+    if avg >= 90:
+        stu["Grade"] = "A+"
+    elif avg >= 80:
+        stu["Grade"] = "A"
+    elif avg >= 70:
+        stu["Grade"] = "B"
+    elif avg >= 60:
+        stu["Grade"] = "C"
+    elif avg >= 50:
+        stu["Grade"] = "D"
+    else:
+        stu["Grade"] = "F"
+
+with open("student.csv", "w", newline="") as f:
+    fieldnames = ["Name"] + subjects + ["Average", "Result", "Grade"]
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(students)
+
+print("Student data saved to student.csv")
+
+with open("student.csv", "r") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(row)
